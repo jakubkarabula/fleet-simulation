@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  webapp:
+    build:
+      dockerfile: Dockerfile
+      context: "./Webapp"
+    volumes:
+      - /app/node_modules
+      - ./Webapp:/app
+    ports:
+      - 3000:3000
+    networks:
+      - local
+
+  fleet:
+    build:
+      dockerfile: Dockerfile
+      context: "./Fleet"
+    volumes:
+      - /app/node_modules
+      - ./Fleet:/app
+    ports:
+      - 8080:8080
+    networks:
+      - local
+
+  vehicle-simulator:
+    build:
+      dockerfile: Dockerfile
+      context: "./VehicleSimulator"
+    volumes:
+      - /app/node_modules
+      - ./VehicleSimulator:/app
+    networks:
+      - local
+    environment:
+      DOCKER_ENV: 'true'
+
+networks:
+  local:
+    driver: bridge
